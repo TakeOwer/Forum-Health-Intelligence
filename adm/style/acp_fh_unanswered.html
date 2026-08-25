@@ -1,0 +1,63 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_UNANSWERED}</h1>
+<p>{L_FH_UNANSWERED_EXPLAIN}</p>
+<p class="fh-muted">{FH_MIN_VIEWS_NOTE_TEXT}</p>
+
+<form method="get" action="{U_ACTION}" class="fh-filters">
+	<fieldset class="quick">
+		<legend>{L_FH_APPLY_FILTER}</legend>
+
+		<label for="fh_hours">{L_FH_UNANSWERED_FILTER}</label>
+		<input type="number" id="fh_hours" name="hours" value="{FH_FILTER_HOURS}" min="1" max="8760" class="inputbox fh-input-narrow">
+		<span>{L_FH_HOURS}</span>
+
+		<label for="fh_forum">{L_FH_FILTER_FORUM}</label>
+		<select id="fh_forum" name="f">
+			<option value="0">{L_FH_FILTER_ALL_FORUMS}</option>
+			{S_FORUM_OPTIONS}
+		</select>
+
+		<input class="button2" type="submit" value="{L_FH_APPLY_FILTER}">
+	</fieldset>
+</form>
+
+<!-- IF S_HAS_ITEMS -->
+<div class="fh-table-scroll">
+	<table class="table1">
+		<thead>
+			<tr>
+				<th scope="col">{L_FH_COL_TOPIC}</th>
+				<th scope="col">{L_FH_COL_FORUM}</th>
+				<th scope="col">{L_FH_COL_VIEWS}</th>
+				<th scope="col">{L_FH_COL_POSTED}</th>
+			</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN fh_topic -->
+			<tr>
+				<td>
+					<a href="{fh_topic.U_TOPIC}">{fh_topic.TITLE}</a>
+					<!-- IF fh_topic.S_FIRST_TOPIC -->
+						<span class="fh-badge fh-badge-first">{L_FH_BADGE_FIRST_TOPIC}</span>
+					<!-- ENDIF -->
+				</td>
+				<td data-label="{L_FH_COL_FORUM}">{fh_topic.FORUM}</td>
+				<td data-label="{L_FH_COL_VIEWS}">{fh_topic.VIEWS}</td>
+				<td data-label="{L_FH_COL_POSTED}">{fh_topic.AGE}</td>
+			</tr>
+		<!-- END fh_topic -->
+		</tbody>
+	</table>
+</div>
+
+<div class="pagination">
+	<!-- INCLUDE pagination.html -->
+</div>
+<!-- ELSE -->
+	<p class="fh-empty">{L_FH_NO_RESULTS}</p>
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

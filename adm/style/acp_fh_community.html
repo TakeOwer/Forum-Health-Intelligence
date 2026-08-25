@@ -1,0 +1,83 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_COMMUNITY_OVERVIEW}</h1>
+<p>{L_FH_COMMUNITY_EXPLAIN}</p>
+
+<!-- IF S_FH_DISABLED -->
+	<div class="errorbox" role="status"><p>{L_FH_COMMUNITY_ENABLED_DESC}</p></div>
+<!-- ENDIF -->
+
+<!-- IF S_FH_NO_HISTORY -->
+	<div class="fh-notice" role="status"><p>{L_FH_NO_HISTORY_YET}</p></div>
+<!-- ENDIF -->
+
+<div class="fh-score-row">
+	<div class="fh-score-card">
+		<h3>{L_FH_COMMUNITY_HEALTH}</h3>
+		<!-- IF S_SCORE_AVAILABLE -->
+			<p class="fh-score-value"><strong>{FH_SCORE_COMMUNITY}</strong> <span class="fh-score-max">/ 100</span></p>
+			<p class="fh-score-label">{L_FH_HEALTH_INDICATOR}</p>
+		<!-- ELSE -->
+			<p class="fh-score-none">{L_FH_NOT_ENOUGH_HISTORY}</p>
+		<!-- ENDIF -->
+	</div>
+	<div class="fh-score-card">
+		<h3>{L_FH_METRIC_RESPONSE}</h3>
+		<p class="fh-score-value"><!-- IF S_RESPONSE_KNOWN -->{FH_RESPONSE_TIME}<!-- ELSE -->{L_FH_NO_DATA}<!-- ENDIF --></p>
+	</div>
+	<div class="fh-score-card">
+		<h3>{L_FH_FIRST_POST_EXPERIENCE}</h3>
+		<p class="fh-score-value">{FH_FIRST_ANSWERED_PCT}%</p>
+		<p class="fh-score-label">{L_FH_RECEIVED_REPLY}</p>
+	</div>
+</div>
+
+<!-- IF .fh_factor -->
+<details class="fh-details">
+	<summary>{L_FH_WHY_THIS_SCORE}</summary>
+	<ul class="fh-factor-list">
+	<!-- BEGIN fh_factor -->
+		<li class="<!-- IF fh_factor.S_POSITIVE -->fh-factor-good<!-- ELSE -->fh-factor-bad<!-- ENDIF -->">
+			<strong>{fh_factor.NAME}</strong>
+			<span class="fh-factor-score">{fh_factor.SCORE}/100</span>
+			<span class="fh-factor-weight">{fh_factor.WEIGHT_TEXT}</span>
+			<span class="fh-factor-detail">{fh_factor.DETAIL}</span>
+		</li>
+	<!-- END fh_factor -->
+	</ul>
+</details>
+<!-- ENDIF -->
+
+<div class="fh-table-scroll">
+	<table class="table1">
+		<thead>
+			<tr>
+				<th scope="col">{L_FH_TRENDS_PERIOD}</th>
+				<th scope="col">{L_FH_CURRENT_PERIOD}</th>
+				<th scope="col">{L_FH_PREVIOUS_PERIOD}</th>
+				<th scope="col">{L_FH_CHANGE}</th>
+			</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN fh_metric -->
+			<tr>
+				<td>{fh_metric.NAME}</td>
+				<td data-label="{L_FH_CURRENT_PERIOD}">{fh_metric.CURRENT}</td>
+				<td data-label="{L_FH_PREVIOUS_PERIOD}">{fh_metric.PREVIOUS}</td>
+				<td data-label="{L_FH_CHANGE}" class="fh-trend-{fh_metric.DIRECTION}">
+					<!-- IF fh_metric.S_COMPARABLE -->
+						{fh_metric.CHANGE}%
+						<span class="fh-trend-word"><!-- IF fh_metric.DIRECTION eq 'up' -->{L_FH_TREND_UP}<!-- ELSEIF fh_metric.DIRECTION eq 'down' -->{L_FH_TREND_DOWN}<!-- ELSE -->{L_FH_TREND_FLAT}<!-- ENDIF --></span>
+					<!-- ELSE -->
+						<span class="fh-muted">{L_FH_TREND_NO_BASELINE}</span>
+					<!-- ENDIF -->
+				</td>
+			</tr>
+		<!-- END fh_metric -->
+		</tbody>
+	</table>
+</div>
+
+<!-- INCLUDE overall_footer.html -->

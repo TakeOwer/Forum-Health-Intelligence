@@ -1,0 +1,54 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_JOBS}</h1>
+<p>{L_FH_JOBS_EXPLAIN}</p>
+
+<!-- IF not S_BACKGROUND_ON -->
+	<div class="errorbox" role="status"><p>{L_FH_BACKGROUND_OFF_NOTE}</p></div>
+<!-- ENDIF -->
+
+<div class="fh-stat-grid">
+	<div class="fh-stat">
+		<span class="fh-stat-value">{FH_COVERAGE_ANALYSED}</span>
+		<span class="fh-stat-label">{L_FH_COVERAGE_LABEL}</span>
+	</div>
+	<div class="fh-stat">
+		<span class="fh-stat-value">{FH_BATCH_SIZE}</span>
+		<span class="fh-stat-label">{L_FH_BATCH_SIZE}</span>
+	</div>
+</div>
+
+<div class="fh-table-scroll">
+	<table class="table1">
+		<thead>
+			<tr>
+				<th scope="col">{L_FH_COL_JOB}</th>
+				<th scope="col">{L_FH_COL_STATUS}</th>
+				<th scope="col">{L_FH_COL_LAST_RUN}</th>
+				<th scope="col">{L_FH_COL_DURATION}</th>
+				<th scope="col">{L_FH_COL_PROCESSED}</th>
+			</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN fh_job -->
+			<tr class="{fh_job.STATE_CLASS}">
+				<td>
+					<strong>{fh_job.NAME}</strong><br>
+					<span class="fh-muted">{fh_job.DESCRIPTION}</span>
+					<!-- IF fh_job.MESSAGE --><br><span class="fh-muted">{fh_job.MESSAGE}</span><!-- ENDIF -->
+				</td>
+				<td data-label="{L_FH_COL_STATUS}"><span class="fh-badge">{fh_job.STATE}</span></td>
+				<td data-label="{L_FH_COL_LAST_RUN}">{fh_job.LAST_RUN}</td>
+				<td data-label="{L_FH_COL_DURATION}">{fh_job.DURATION}s</td>
+				<td data-label="{L_FH_COL_PROCESSED}">{fh_job.PROCESSED}</td>
+			</tr>
+		<!-- END fh_job -->
+		</tbody>
+	</table>
+</div>
+
+<p class="fh-muted">{L_FH_CRON_NOTE}</p>
+
+<!-- INCLUDE overall_footer.html -->

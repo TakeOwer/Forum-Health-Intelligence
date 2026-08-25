@@ -1,0 +1,65 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_NEWUSERS}</h1>
+<p>{L_FH_NEWUSERS_EXPLAIN}</p>
+<p class="fh-muted">{L_FH_ONBOARDING_NOTE}</p>
+
+<!-- IF S_HAS_DATA -->
+<div class="fh-stat-grid">
+	<div class="fh-stat">
+		<span class="fh-stat-value">{FH_FIRST_TOTAL}</span>
+		<span class="fh-stat-label">{L_FH_FIRST_POSTERS}</span>
+	</div>
+	<div class="fh-stat fh-stat-good">
+		<span class="fh-stat-value">{FH_FIRST_ANSWERED_PCT}%</span>
+		<span class="fh-stat-label">{L_FH_RECEIVED_REPLY} ({FH_FIRST_ANSWERED})</span>
+	</div>
+	<div class="fh-stat fh-stat-bad">
+		<span class="fh-stat-value">{FH_FIRST_UNANSWERED_PCT}%</span>
+		<span class="fh-stat-label">{L_FH_NO_REPLY} ({FH_FIRST_UNANSWERED})</span>
+	</div>
+	<div class="fh-stat">
+		<span class="fh-stat-value"><!-- IF S_RESPONSE_KNOWN -->{FH_AVG_RESPONSE}<!-- ELSE -->{L_FH_NO_DATA}<!-- ENDIF --></span>
+		<span class="fh-stat-label">{L_FH_AVG_FIRST_RESPONSE}</span>
+	</div>
+	<div class="fh-stat">
+		<span class="fh-stat-value">{FH_RETURN_PCT}%</span>
+		<span class="fh-stat-label">{L_FH_RETURN_RATE}</span>
+	</div>
+</div>
+<p class="fh-muted">{FH_RETURN_COHORT_TEXT}</p>
+<!-- ELSE -->
+	<p class="fh-empty">{L_FH_NO_DATA}</p>
+<!-- ENDIF -->
+
+<section>
+	<h2>{L_FH_UNANSWERED_FIRST}</h2>
+	<!-- IF S_HAS_ITEMS -->
+	<div class="fh-table-scroll">
+		<table class="table1">
+			<thead>
+				<tr>
+					<th scope="col">{L_FH_COL_TOPIC}</th>
+					<th scope="col">{L_FH_COL_VIEWS}</th>
+					<th scope="col">{L_FH_COL_POSTED}</th>
+				</tr>
+			</thead>
+			<tbody>
+			<!-- BEGIN fh_topic -->
+				<tr>
+					<td><a href="{fh_topic.U_TOPIC}">{fh_topic.TITLE}</a></td>
+					<td data-label="{L_FH_COL_VIEWS}">{fh_topic.VIEWS}</td>
+					<td data-label="{L_FH_COL_POSTED}">{fh_topic.DATE}</td>
+				</tr>
+			<!-- END fh_topic -->
+			</tbody>
+		</table>
+	</div>
+	<!-- ELSE -->
+		<p class="fh-empty">{L_FH_NO_RESULTS}</p>
+	<!-- ENDIF -->
+</section>
+
+<!-- INCLUDE overall_footer.html -->

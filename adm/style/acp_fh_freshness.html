@@ -1,0 +1,44 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_FRESHNESS}</h1>
+<p>{L_FH_FRESHNESS_EXPLAIN}</p>
+<p class="fh-muted">{L_FH_FRESHNESS_NOTE}</p>
+
+<!-- IF S_FH_DISABLED -->
+	<div class="errorbox" role="status"><p>{L_FH_FRESHNESS_ENABLED_DESC}</p></div>
+<!-- ENDIF -->
+
+<!-- IF S_HAS_ITEMS -->
+<div class="fh-table-scroll">
+	<table class="table1">
+		<thead>
+			<tr>
+				<th scope="col">{L_FH_COL_TOPIC}</th>
+				<th scope="col">{L_FH_COL_REASON}</th>
+				<th scope="col">{L_FH_COL_CONFIDENCE}</th>
+				<th scope="col">{L_FH_COL_VIEWS}</th>
+				<th scope="col">{L_FH_COL_LAST_POST}</th>
+			</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN fh_topic -->
+			<tr>
+				<td><a href="{fh_topic.U_TOPIC}">{fh_topic.TITLE}</a></td>
+				<td data-label="{L_FH_COL_REASON}">{fh_topic.REASON}</td>
+				<td data-label="{L_FH_COL_CONFIDENCE}">{fh_topic.CONFIDENCE}%</td>
+				<td data-label="{L_FH_COL_VIEWS}">{fh_topic.VIEWS}</td>
+				<td data-label="{L_FH_COL_LAST_POST}">{fh_topic.LAST_POST}</td>
+			</tr>
+		<!-- END fh_topic -->
+		</tbody>
+	</table>
+</div>
+
+<div class="pagination"><!-- INCLUDE pagination.html --></div>
+<!-- ELSE -->
+	<p class="fh-empty">{L_FH_NO_RESULTS}</p>
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

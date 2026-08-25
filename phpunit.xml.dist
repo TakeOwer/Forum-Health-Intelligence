@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+	bootstrap="../../../tests/bootstrap.php"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	stopOnFailure="false">
+
+	<testsuites>
+		<testsuite name="unit">
+			<directory suffix="_test.php">./tests/unit</directory>
+		</testsuite>
+		<testsuite name="functional">
+			<directory suffix="_test.php">./tests/functional</directory>
+		</testsuite>
+	</testsuites>
+
+	<php>
+		<server name="PHPBB_TEST_CONFIG" value="phpunit_mysqli_running.xml"/>
+	</php>
+</phpunit>

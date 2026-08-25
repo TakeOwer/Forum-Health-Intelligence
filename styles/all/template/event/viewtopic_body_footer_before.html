@@ -1,0 +1,15 @@
+<!--
+	Related discussions, shown only when the feature is enabled and the
+	background analysis has already found something. The listener assigns
+	S_FH_RELATED only after per-topic permission checks have passed.
+-->
+<!-- IF S_FH_RELATED -->
+<div class="fh-related">
+	<h3>{L_FH_RELATED_TOPICS}</h3>
+	<ul>
+	<!-- BEGIN fh_related -->
+		<li><a href="{fh_related.U_URL}">{fh_related.TITLE}</a></li>
+	<!-- END fh_related -->
+	</ul>
+</div>
+<!-- ENDIF -->

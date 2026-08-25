@@ -1,0 +1,70 @@
+/**
+ * Forum Health & Intelligence — public stylesheet.
+ *
+ * Two small components only: the duplicate hint shown while composing a topic,
+ * and the related-discussions list under a topic. Both are optional features
+ * that are off by default, so most forums will never load anything from here.
+ *
+ * Deliberately minimal and colour-neutral so it inherits the board's theme
+ * rather than fighting it.
+ */
+
+.fh-hint {
+	margin: 10px 0;
+	padding: 10px 12px;
+	border-left: 3px solid #999;
+	background: rgba(0, 0, 0, .03);
+}
+
+.fh-hint h3 {
+	margin: 0 0 6px;
+	font-size: 1em;
+}
+
+.fh-hint ul {
+	margin: 0 0 8px;
+	padding-left: 1.2em;
+}
+
+.fh-hint li {
+	margin: 3px 0;
+}
+
+.fh-hint-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.fh-related {
+	margin: 12px 0;
+	padding: 10px 12px;
+	border: 1px solid rgba(0, 0, 0, .12);
+	border-radius: 4px;
+}
+
+.fh-related h3 {
+	margin: 0 0 6px;
+	font-size: .95em;
+	text-transform: uppercase;
+	letter-spacing: .03em;
+	opacity: .75;
+}
+
+.fh-related ul {
+	margin: 0;
+	padding-left: 1.2em;
+}
+
+.fh-related li {
+	margin: 3px 0;
+	overflow-wrap: anywhere;
+}
+
+@media only screen and (max-width: 700px) {
+
+	.fh-hint-actions .button {
+		flex: 1 1 auto;
+		text-align: center;
+	}
+}

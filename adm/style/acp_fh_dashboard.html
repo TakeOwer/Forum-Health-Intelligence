@@ -1,0 +1,194 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_DASHBOARD}</h1>
+<p>{L_FH_DASHBOARD_EXPLAIN}</p>
+
+<!-- IF not S_FH_ENABLED -->
+	<div class="errorbox" role="alert">
+		<p>{L_FH_ENABLED_DESC}</p>
+	</div>
+<!-- ENDIF -->
+
+<!-- IF S_FH_JOB_DISABLED -->
+	<div class="errorbox" role="status">
+		<p>{L_FH_ANALYSIS_PAUSED}</p>
+	</div>
+<!-- ENDIF -->
+
+<!-- Health indicators. Each one states its own availability rather than
+     showing a zero that would read as a real score. -->
+<div class="fh-score-row">
+	<div class="fh-score-card">
+		<h3>{L_FH_CONTENT_HEALTH}</h3>
+		<!-- IF S_FH_SCORE_CONTENT_OK -->
+			<p class="fh-score-value"><strong>{FH_SCORE_CONTENT}</strong> <span class="fh-score-max">/ 100</span></p>
+			<p class="fh-score-label">{L_FH_HEALTH_INDICATOR}</p>
+		<!-- ELSE -->
+			<p class="fh-score-none">{FH_CONTENT_REASON}</p>
+		<!-- ENDIF -->
+	</div>
+
+	<div class="fh-score-card">
+		<h3>{L_FH_COMMUNITY_HEALTH}</h3>
+		<!-- IF S_FH_SCORE_COMMUNITY_OK -->
+			<p class="fh-score-value"><strong>{FH_SCORE_COMMUNITY}</strong> <span class="fh-score-max">/ 100</span></p>
+			<p class="fh-score-label">{L_FH_HEALTH_INDICATOR}</p>
+		<!-- ELSE -->
+			<p class="fh-score-none">{FH_COMMUNITY_REASON}</p>
+		<!-- ENDIF -->
+	</div>
+
+	<div class="fh-score-card fh-score-overall">
+		<h3>{L_FH_OVERALL_HEALTH}</h3>
+		<!-- IF S_FH_SCORE_OVERALL_OK -->
+			<p class="fh-score-value"><strong>{FH_SCORE_OVERALL}</strong> <span class="fh-score-max">/ 100</span></p>
+			<p class="fh-score-label">{L_FH_HEALTH_INDICATOR}</p>
+		<!-- ELSE -->
+			<p class="fh-score-none">{L_FH_NOT_ENOUGH_DATA}</p>
+		<!-- ENDIF -->
+	</div>
+</div>
+
+<p class="fh-disclaimer">{L_FH_HEALTH_DISCLAIMER}</p>
+
+<!-- The factor breakdown. Collapsed by default, but present in the markup so
+     it is reachable without JavaScript. -->
+<!-- IF .fh_factor_content or .fh_factor_community -->
+<details class="fh-details">
+	<summary>{L_FH_WHY_THIS_SCORE}</summary>
+
+	<!-- IF .fh_factor_content -->
+		<h3>{L_FH_CONTENT_HEALTH}</h3>
+		<ul class="fh-factor-list">
+		<!-- BEGIN fh_factor_content -->
+			<li class="<!-- IF fh_factor_content.S_POSITIVE -->fh-factor-good<!-- ELSE -->fh-factor-bad<!-- ENDIF -->">
+				<span class="fh-factor-mark" aria-hidden="true"><!-- IF fh_factor_content.S_POSITIVE -->&#10003;<!-- ELSE -->&#8226;<!-- ENDIF --></span>
+				<strong>{fh_factor_content.NAME}</strong>
+				<span class="fh-factor-score">{fh_factor_content.SCORE}/100</span>
+				<span class="fh-factor-weight">{fh_factor_content.WEIGHT_TEXT}</span>
+				<span class="fh-factor-detail">{fh_factor_content.DETAIL}</span>
+			</li>
+		<!-- END fh_factor_content -->
+		</ul>
+	<!-- ENDIF -->
+
+	<!-- IF .fh_factor_community -->
+		<h3>{L_FH_COMMUNITY_HEALTH}</h3>
+		<ul class="fh-factor-list">
+		<!-- BEGIN fh_factor_community -->
+			<li class="<!-- IF fh_factor_community.S_POSITIVE -->fh-factor-good<!-- ELSE -->fh-factor-bad<!-- ENDIF -->">
+				<span class="fh-factor-mark" aria-hidden="true"><!-- IF fh_factor_community.S_POSITIVE -->&#10003;<!-- ELSE -->&#8226;<!-- ENDIF --></span>
+				<strong>{fh_factor_community.NAME}</strong>
+				<span class="fh-factor-score">{fh_factor_community.SCORE}/100</span>
+				<span class="fh-factor-weight">{fh_factor_community.WEIGHT_TEXT}</span>
+				<span class="fh-factor-detail">{fh_factor_community.DETAIL}</span>
+			</li>
+		<!-- END fh_factor_community -->
+		</ul>
+	<!-- ENDIF -->
+</details>
+<!-- ENDIF -->
+
+<div class="fh-columns">
+
+	<section class="fh-column">
+		<h2>{L_FH_PRIORITY_ALERTS}</h2>
+		<!-- IF S_FH_HAS_ALERTS -->
+			<ul class="fh-alert-list">
+			<!-- BEGIN fh_alert -->
+				<li class="fh-alert {fh_alert.SEVERITY_CLASS}">
+					<span class="fh-badge">{fh_alert.SEVERITY}</span>
+					<span class="fh-alert-text">{fh_alert.TEXT}</span>
+					<!-- IF fh_alert.U_VIEW --><a href="{fh_alert.U_VIEW}">{L_FH_ACTION_REVIEW}</a><!-- ENDIF -->
+				</li>
+			<!-- END fh_alert -->
+			</ul>
+			<p><a href="{U_ACTION}">{FH_VIEW_ALL_ALERTS_TEXT}</a></p>
+		<!-- ELSE -->
+			<p class="fh-empty">{L_FH_NO_ALERTS}</p>
+		<!-- ENDIF -->
+	</section>
+
+	<section class="fh-column">
+		<h2>{L_FH_RECOMMENDED_ACTIONS}</h2>
+		<!-- IF S_FH_HAS_RECOMMENDATIONS -->
+			<ul class="fh-rec-list">
+			<!-- BEGIN fh_recommendation -->
+				<li>
+					<p>{fh_recommendation.TEXT}</p>
+					<a class="button2" href="{fh_recommendation.U_ACTION}">{fh_recommendation.ACTION}</a>
+				</li>
+			<!-- END fh_recommendation -->
+			</ul>
+		<!-- ELSE -->
+			<p class="fh-empty">{L_FH_NO_RECOMMENDATIONS}</p>
+		<!-- ENDIF -->
+	</section>
+
+</div>
+
+<section>
+	<h2>{L_FH_KEY_TRENDS}</h2>
+	<!-- IF S_FH_NO_HISTORY -->
+		<p class="fh-empty">{L_FH_NO_HISTORY_YET}</p>
+	<!-- ELSE -->
+		<p>{FH_TREND_PERIOD_TEXT}</p>
+		<div class="fh-table-scroll">
+			<table class="table1">
+				<thead>
+					<tr><th scope="col">{L_FH_METRIC_ACTIVE_POSTERS}</th><th scope="col">{L_FH_CURRENT_PERIOD}</th><th scope="col">{L_FH_CHANGE}</th></tr>
+				</thead>
+				<tbody>
+				<!-- BEGIN fh_trend -->
+					<tr>
+						<td>{fh_trend.NAME}</td>
+						<td>{fh_trend.CURRENT}</td>
+						<td class="fh-trend-{fh_trend.DIRECTION}">
+							<!-- IF fh_trend.S_COMPARABLE -->
+								{fh_trend.CHANGE}%
+								<span class="fh-trend-word">
+									<!-- IF fh_trend.DIRECTION eq 'up' -->{L_FH_TREND_UP}<!-- ELSEIF fh_trend.DIRECTION eq 'down' -->{L_FH_TREND_DOWN}<!-- ELSE -->{L_FH_TREND_FLAT}<!-- ENDIF -->
+								</span>
+							<!-- ELSE -->
+								<span class="fh-muted">{L_FH_TREND_NO_BASELINE}</span>
+							<!-- ENDIF -->
+						</td>
+					</tr>
+				<!-- END fh_trend -->
+				</tbody>
+			</table>
+		</div>
+	<!-- ENDIF -->
+</section>
+
+<div class="fh-columns">
+
+	<section class="fh-column">
+		<h2>{L_FH_MODERATOR_LOAD}</h2>
+		<ul class="fh-load-list">
+			<li>{L_ACP_FH_DUPLICATES}: <strong>{FH_LOAD_DUPLICATES}</strong></li>
+			<li>{L_ACP_FH_LINKS}: <strong>{FH_LOAD_LINKS}</strong></li>
+			<li>{L_ACP_FH_UNANSWERED}: <strong>{FH_LOAD_UNANSWERED}</strong></li>
+			<li>{L_ACP_FH_FRESHNESS}: <strong>{FH_LOAD_OUTDATED}</strong></li>
+		</ul>
+		<p><strong>{FH_LOAD_TOTAL_TEXT}</strong></p>
+	</section>
+
+	<section class="fh-column">
+		<h2>{L_FH_INTEGRATION_STATUS}</h2>
+		<ul class="fh-int-list">
+		<!-- BEGIN fh_integration -->
+			<li class="{fh_integration.STATE_CLASS}">
+				<strong>{fh_integration.NAME}</strong>
+				<span class="fh-badge">{fh_integration.STATE}</span>
+			</li>
+		<!-- END fh_integration -->
+		</ul>
+		<p class="fh-muted">{FH_LAST_ANALYSIS_TEXT}<br>{FH_COVERAGE_TEXT}</p>
+	</section>
+
+</div>
+
+<!-- INCLUDE overall_footer.html -->

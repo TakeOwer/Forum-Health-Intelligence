@@ -1,0 +1,14 @@
+{#
+	Loads this extension's ACP stylesheet.
+
+	U_FH_ACP_CSS is assigned by base_module::assign_common(), so it is only set
+	while one of this extension's own pages is being rendered. On every other ACP
+	page this event emits nothing.
+
+	The link is needed at all because phpBB does not pick up an extension's ACP
+	stylesheet by convention and the ACP has no INCLUDECSS equivalent. Without
+	it, every rule in adm/style/forumhealth.css is dead.
+#}
+<!-- IF U_FH_ACP_CSS -->
+	<link href="{U_FH_ACP_CSS}" rel="stylesheet">
+<!-- ENDIF -->

@@ -1,0 +1,96 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_INTEGRATIONS}</h1>
+<p>{L_FH_INTEGRATIONS_EXPLAIN}</p>
+
+<form id="fh_integrations" method="post" action="{U_ACTION}">
+
+	<fieldset>
+		<legend>{L_FH_INT_SEARCH}</legend>
+
+		<!-- The state and the advice always appear together: a status word on
+		     its own rarely tells an administrator what to do next. -->
+		<dl>
+			<dt><label>{L_FH_INT_STATE}</label></dt>
+			<dd>
+				<span class="fh-badge {FH_SEARCH_STATE_CLASS}">{FH_SEARCH_STATE}</span>
+				<p class="fh-advice">{FH_SEARCH_ADVICE}</p>
+				<!-- IF S_SEARCH_BOUND and FH_SEARCH_DESCRIPTION -->
+					<p class="fh-muted">{FH_SEARCH_PROVIDER_TEXT}</p>
+				<!-- ENDIF -->
+				<!-- IF S_SEARCH_CANDIDATES -->
+					<p class="fh-muted">{FH_SEARCH_CANDIDATES_TEXT}</p>
+				<!-- ENDIF -->
+				<!-- IF FH_SEARCH_FAILURES -->
+					<p class="fh-muted">{FH_SEARCH_FAILURES_TEXT}</p>
+				<!-- ENDIF -->
+				<p class="fh-muted">{FH_SEARCH_CHECKED_TEXT}</p>
+			</dd>
+		</dl>
+
+		<dl>
+			<dt><label for="search_enabled">{L_FH_INT_ENABLE}</label></dt>
+			<dd>
+				<label><input type="radio" id="search_enabled" name="search_enabled" value="1"<!-- IF S_SEARCH_ON --> checked="checked"<!-- ENDIF -->> {L_FH_YES}</label>
+				<label><input type="radio" name="search_enabled" value="0"<!-- IF not S_SEARCH_ON --> checked="checked"<!-- ENDIF -->> {L_FH_NO}</label>
+			</dd>
+		</dl>
+
+		<dl>
+			<dt>
+				<label for="search_service">{L_FH_INT_SERVICE_ID}</label>
+				<br><span>{L_FH_INT_SERVICE_ID_EXPLAIN}</span>
+			</dt>
+			<dd><input class="inputbox" type="text" id="search_service" name="search_service" value="{FH_SEARCH_SERVICE}" maxlength="255"></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{L_FH_INT_AI}</legend>
+
+		<dl>
+			<dt><label>{L_FH_INT_STATE}</label></dt>
+			<dd>
+				<span class="fh-badge {FH_AI_STATE_CLASS}">{FH_AI_STATE}</span>
+				<p class="fh-advice">{FH_AI_ADVICE}</p>
+				<!-- IF S_AI_BOUND and FH_AI_DESCRIPTION -->
+					<p class="fh-muted">{FH_AI_PROVIDER_TEXT}</p>
+				<!-- ENDIF -->
+				<!-- IF S_AI_CANDIDATES -->
+					<p class="fh-muted">{FH_AI_CANDIDATES_TEXT}</p>
+				<!-- ENDIF -->
+				<!-- IF FH_AI_FAILURES -->
+					<p class="fh-muted">{FH_AI_FAILURES_TEXT}</p>
+				<!-- ENDIF -->
+				<p class="fh-muted">{FH_AI_CHECKED_TEXT}</p>
+			</dd>
+		</dl>
+
+		<dl>
+			<dt><label for="ai_enabled">{L_FH_INT_ENABLE}</label></dt>
+			<dd>
+				<label><input type="radio" id="ai_enabled" name="ai_enabled" value="1"<!-- IF S_AI_ON --> checked="checked"<!-- ENDIF -->> {L_FH_YES}</label>
+				<label><input type="radio" name="ai_enabled" value="0"<!-- IF not S_AI_ON --> checked="checked"<!-- ENDIF -->> {L_FH_NO}</label>
+			</dd>
+		</dl>
+
+		<dl>
+			<dt>
+				<label for="ai_service">{L_FH_INT_SERVICE_ID}</label>
+				<br><span>{L_FH_INT_SERVICE_ID_EXPLAIN}</span>
+			</dt>
+			<dd><input class="inputbox" type="text" id="ai_service" name="ai_service" value="{FH_AI_SERVICE}" maxlength="255"></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" name="submit" value="{L_SUBMIT}">
+		<a class="button2" href="{U_REFRESH}">{L_FH_INT_REFRESH}</a>
+		{S_FORM_TOKEN}
+	</fieldset>
+
+</form>
+
+<!-- INCLUDE overall_footer.html -->

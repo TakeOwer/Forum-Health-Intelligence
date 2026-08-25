@@ -1,0 +1,17 @@
+<!--
+	The duplicate hint container. It is empty until the JavaScript fills it, and
+	the whole feature simply does not appear without JavaScript, which is the
+	right trade: this is a courtesy suggestion, not functionality.
+
+	The link hash is emitted here so the AJAX endpoint can verify the request
+	came from this session's posting form rather than from an arbitrary page.
+-->
+<!-- IF S_FH_DUPLICATE_CHECK -->
+<div id="fh-duplicate-hint" class="fh-hint" hidden
+	data-endpoint="{U_FH_DUPLICATE_CHECK}"
+	data-hash="{FH_SIMILAR_HASH}"
+	data-label-view="{L_FH_USER_WARNING_VIEW}"
+	data-label-dismiss="{L_FH_USER_WARNING_DISMISS}"></div>
+
+<!-- INCLUDEJS @salvocortesiano_forumhealth/forumhealth.js -->
+<!-- ENDIF -->

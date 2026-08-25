@@ -1,0 +1,10 @@
+# The extension exposes exactly one public route: the duplicate hint used by
+# the posting form. Everything else lives in the ACP.
+salvocortesiano_forumhealth_similar:
+    path: /forumhealth/similar/{f}
+    defaults:
+        _controller: salvocortesiano.forumhealth.controller.similar:handle
+        f: 0
+    requirements:
+        f: \d+
+    methods: [GET]

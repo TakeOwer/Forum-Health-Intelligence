@@ -1,0 +1,10 @@
+{#
+	Loads this extension's public stylesheet.
+
+	Only two small components use it, and both are optional features that are off
+	by default, so on most boards this file styles nothing. It is still loaded
+	unconditionally: the alternative is a template variable set by the listener,
+	which would mean the listener runs on every page view purely to decide
+	whether to emit a link tag.
+#}
+<!-- INCLUDECSS @salvocortesiano_forumhealth/forumhealth.css -->

@@ -1,0 +1,73 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_CONTRIBUTORS}</h1>
+<p>{FH_CONTRIBUTORS_EXPLAIN_TEXT}</p>
+<p class="fh-muted">{L_FH_CONTRIBUTORS_NOTE}</p>
+
+<section>
+	<h2>{L_FH_TOP_RESPONDERS}</h2>
+	<!-- IF S_HAS_RESPONDERS -->
+	<div class="fh-table-scroll">
+		<table class="table1">
+			<thead>
+				<tr>
+					<th scope="col">{L_FH_COL_MEMBER}</th>
+					<th scope="col">{L_FH_COL_REPLIES}</th>
+					<th scope="col">{L_FH_COL_TOPICS_TOUCHED}</th>
+					<th scope="col">{L_FH_COL_ROLE}</th>
+				</tr>
+			</thead>
+			<tbody>
+			<!-- BEGIN fh_responder -->
+				<tr>
+					<td>{fh_responder.USERNAME}</td>
+					<td data-label="{L_FH_COL_REPLIES}">{fh_responder.REPLIES}</td>
+					<td data-label="{L_FH_COL_TOPICS_TOUCHED}">{fh_responder.TOPICS}</td>
+					<td data-label="{L_FH_COL_ROLE}">
+						<strong>{fh_responder.ROLE}</strong><br>
+						<span class="fh-muted">{fh_responder.REASON}</span>
+					</td>
+				</tr>
+			<!-- END fh_responder -->
+			</tbody>
+		</table>
+	</div>
+	<!-- ELSE -->
+		<p class="fh-empty">{L_FH_NO_RESULTS}</p>
+	<!-- ENDIF -->
+</section>
+
+<section>
+	<h2>{L_FH_NEWCOMER_HELPERS}</h2>
+	<!-- IF S_HAS_HELPERS -->
+	<div class="fh-table-scroll">
+		<table class="table1">
+			<thead>
+				<tr>
+					<th scope="col">{L_FH_COL_MEMBER}</th>
+					<th scope="col">{L_FH_COL_REPLIES}</th>
+					<th scope="col">{L_FH_COL_ROLE}</th>
+				</tr>
+			</thead>
+			<tbody>
+			<!-- BEGIN fh_helper -->
+				<tr>
+					<td>{fh_helper.USERNAME}</td>
+					<td data-label="{L_FH_COL_REPLIES}">{fh_helper.REPLIES}</td>
+					<td data-label="{L_FH_COL_ROLE}">
+						<strong>{fh_helper.ROLE}</strong><br>
+						<span class="fh-muted">{fh_helper.REASON}</span>
+					</td>
+				</tr>
+			<!-- END fh_helper -->
+			</tbody>
+		</table>
+	</div>
+	<!-- ELSE -->
+		<p class="fh-empty">{L_FH_NO_RESULTS}</p>
+	<!-- ENDIF -->
+</section>
+
+<!-- INCLUDE overall_footer.html -->

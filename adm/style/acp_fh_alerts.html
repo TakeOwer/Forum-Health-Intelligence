@@ -1,0 +1,78 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_ALERTS}</h1>
+<p>{L_FH_ALERTS_EXPLAIN}</p>
+<p class="fh-muted">{L_FH_DISMISS_NOTE}</p>
+
+<ul class="fh-counts">
+	<li class="fh-sev-critical"><strong>{FH_COUNT_CRITICAL}</strong> {L_FH_SEVERITY_CRITICAL}</li>
+	<li class="fh-sev-high"><strong>{FH_COUNT_HIGH}</strong> {L_FH_SEVERITY_HIGH}</li>
+	<li class="fh-sev-medium"><strong>{FH_COUNT_MEDIUM}</strong> {L_FH_SEVERITY_MEDIUM}</li>
+	<li class="fh-sev-low"><strong>{FH_COUNT_LOW}</strong> {L_FH_SEVERITY_LOW}</li>
+</ul>
+
+<!-- IF .fh_type_filter -->
+<nav class="fh-type-filters" aria-label="{L_FH_COL_ALERT}">
+	<a href="{U_ACTION}" class="<!-- IF not FH_FILTER_TYPE -->fh-active<!-- ENDIF -->">{L_FH_FILTER_ALL}</a>
+	<!-- BEGIN fh_type_filter -->
+		<a href="{U_ACTION}&amp;type={fh_type_filter.KEY}" class="<!-- IF fh_type_filter.S_ACTIVE -->fh-active<!-- ENDIF -->">{fh_type_filter.NAME} ({fh_type_filter.COUNT})</a>
+	<!-- END fh_type_filter -->
+</nav>
+<!-- ENDIF -->
+
+<!-- IF S_HAS_ITEMS -->
+<form method="post" action="{U_ACTION}">
+<div class="fh-table-scroll">
+	<table class="table1">
+		<thead>
+			<tr>
+				<!-- IF S_FH_CAN_MANAGE --><th scope="col"><span class="fh-visually-hidden">{L_FH_SELECT_ALL}</span></th><!-- ENDIF -->
+				<th scope="col">{L_FH_COL_SEVERITY}</th>
+				<th scope="col">{L_FH_COL_ALERT}</th>
+				<th scope="col">{L_FH_COL_STATUS}</th>
+				<th scope="col">{L_FH_COL_CREATED}</th>
+			</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN fh_alert -->
+			<tr class="{fh_alert.SEVERITY_CLASS}">
+				<!-- IF S_FH_CAN_MANAGE -->
+					<td><input type="checkbox" name="alert_ids[]" value="{fh_alert.ID}" aria-label="{fh_alert.TYPE}"></td>
+				<!-- ENDIF -->
+				<td data-label="{L_FH_COL_SEVERITY}"><span class="fh-badge">{fh_alert.SEVERITY}</span></td>
+				<td>
+					<strong>{fh_alert.TYPE}</strong><br>
+					{fh_alert.TEXT}
+					<!-- IF fh_alert.U_ENTITY -->
+						<br><a href="{fh_alert.U_ENTITY}">{fh_alert.ACTION_TEXT}</a>
+					<!-- ENDIF -->
+					<br><span class="fh-muted">{fh_alert.SOURCE}</span>
+				</td>
+				<td data-label="{L_FH_COL_STATUS}">{fh_alert.STATUS}</td>
+				<td data-label="{L_FH_COL_CREATED}">{fh_alert.CREATED}</td>
+			</tr>
+		<!-- END fh_alert -->
+		</tbody>
+	</table>
+</div>
+
+<!-- IF S_FH_CAN_MANAGE -->
+<fieldset class="quick fh-bulk">
+	<legend>{L_FH_COL_ACTIONS}</legend>
+	<button class="button2" type="submit" name="action" value="acknowledge">{L_FH_ACTION_ACKNOWLEDGE}</button>
+	<button class="button2" type="submit" name="action" value="resolve">{L_FH_ACTION_RESOLVE}</button>
+	<button class="button2" type="submit" name="action" value="dismiss">{L_FH_ACTION_DISMISS_ALERT}</button>
+</fieldset>
+<!-- ENDIF -->
+
+{S_FORM_TOKEN}
+</form>
+
+<div class="pagination"><!-- INCLUDE pagination.html --></div>
+<!-- ELSE -->
+	<p class="fh-empty">{L_FH_NO_ALERTS}</p>
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

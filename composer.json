@@ -1,0 +1,31 @@
+{
+    "name": "salvocortesiano/forumhealth",
+    "type": "phpbb-extension",
+    "description": "Forum Health & Intelligence - a forum maintenance and intelligence layer for phpBB. Analyses content health and community health, produces explainable alerts and actionable recommendations. Works standalone; optional Meilisearch and AI Bots integrations enhance analysis without ever becoming mandatory.",
+    "homepage": "https://github.com/salvocortesiano/forumhealth",
+    "version": "1.1.0",
+    "time": "2026-08-23",
+    "keywords": ["phpbb", "extension", "forum health", "analytics", "moderation", "duplicate detection", "intelligence"],
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "Salvo Cortesiano",
+            "homepage": "https://github.com/salvocortesiano",
+            "role": "Author"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.3"
+    },
+    "extra": {
+        "display-name": "Forum Health & Intelligence",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.3.0,<4.0.0@dev"
+        },
+        "version-check": {
+            "host": "raw.githubusercontent.com",
+            "directory": "/salvocortesiano/forumhealth/master",
+            "filename": "version.json"
+        }
+    }
+}

@@ -1,0 +1,117 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_RULES}</h1>
+<p>{L_FH_RULES_EXPLAIN}</p>
+
+<!-- IF S_LIST -->
+
+	<!-- IF not S_RULES_ON -->
+		<div class="errorbox" role="status"><p>{L_FH_RULES_DISABLED_NOTE}</p></div>
+	<!-- ENDIF -->
+
+	<!-- IF S_HAS_ITEMS -->
+	<div class="fh-table-scroll">
+		<table class="table1">
+			<thead>
+				<tr>
+					<th scope="col">{L_FH_RULE_NAME}</th>
+					<th scope="col">{L_FH_RULE_SUMMARY}</th>
+					<th scope="col">{L_FH_RULE_ACTION}</th>
+					<th scope="col">{L_FH_COL_STATUS}</th>
+					<th scope="col">{L_FH_COL_ACTIONS}</th>
+				</tr>
+			</thead>
+			<tbody>
+			<!-- BEGIN fh_rule -->
+				<tr>
+					<td><strong>{fh_rule.NAME}</strong></td>
+					<td data-label="{L_FH_RULE_SUMMARY}"><code class="fh-rule-summary">{fh_rule.SUMMARY}</code></td>
+					<td data-label="{L_FH_RULE_ACTION}">
+						{fh_rule.ACTION}
+						<span class="fh-badge {fh_rule.SEVERITY_CLASS}">{fh_rule.SEVERITY}</span>
+					</td>
+					<td data-label="{L_FH_COL_STATUS}">{fh_rule.STATE}</td>
+					<td data-label="{L_FH_COL_ACTIONS}">
+						<a class="button2" href="{fh_rule.U_EDIT}">{L_EDIT}</a>
+						<a class="button2" href="{fh_rule.U_TOGGLE}"><!-- IF fh_rule.S_ENABLED -->{L_DISABLE}<!-- ELSE -->{L_ENABLE}<!-- ENDIF --></a>
+						<a class="button2" href="{fh_rule.U_DELETE}">{L_DELETE}</a>
+					</td>
+				</tr>
+			<!-- END fh_rule -->
+			</tbody>
+		</table>
+	</div>
+	<!-- ELSE -->
+		<p class="fh-empty">{L_FH_NO_RESULTS}</p>
+	<!-- ENDIF -->
+
+	<p><a class="button1" href="{U_ADD}">{L_FH_RULE_ADD}</a></p>
+
+<!-- ELSEIF S_EDIT -->
+
+	<form id="fh_rule_form" method="post" action="{U_SAVE}">
+
+		<fieldset>
+			<legend><!-- IF RULE_ID -->{L_FH_RULE_EDIT}<!-- ELSE -->{L_FH_RULE_ADD}<!-- ENDIF --></legend>
+
+			<dl>
+				<dt><label for="rule_name">{L_FH_RULE_NAME}</label><br><span>{L_FH_RULE_NAME_EXPLAIN}</span></dt>
+				<dd><input class="inputbox" type="text" id="rule_name" name="rule_name" value="{RULE_NAME}" maxlength="255"></dd>
+			</dl>
+
+			<dl>
+				<dt><label for="rule_enabled">{L_FH_RULE_ENABLED}</label></dt>
+				<dd>
+					<label><input type="radio" id="rule_enabled" name="rule_enabled" value="1"<!-- IF S_RULE_ENABLED --> checked="checked"<!-- ENDIF -->> {L_FH_YES}</label>
+					<label><input type="radio" name="rule_enabled" value="0"<!-- IF not S_RULE_ENABLED --> checked="checked"<!-- ENDIF -->> {L_FH_NO}</label>
+				</dd>
+			</dl>
+		</fieldset>
+
+		<fieldset>
+			<legend>{L_FH_RULE_CONDITIONS}</legend>
+			<p class="fh-muted">{L_FH_RULE_EMPTY_ROW_NOTE}</p>
+
+			<!-- Conditions are three selects and a number. There is deliberately
+			     no free-text field anywhere in this form. -->
+			<!-- BEGIN fh_condition -->
+			<div class="fh-condition-row">
+				<label class="fh-visually-hidden" for="cf{fh_condition.INDEX}">{L_FH_RULE_CONDITIONS}</label>
+				<select id="cf{fh_condition.INDEX}" name="condition_field[]">{fh_condition.S_FIELD_OPTIONS}</select>
+
+				<label class="fh-visually-hidden" for="co{fh_condition.INDEX}">{L_FH_RULE_CONDITIONS}</label>
+				<select id="co{fh_condition.INDEX}" name="condition_operator[]">{fh_condition.S_OPERATOR_OPTIONS}</select>
+
+				<label class="fh-visually-hidden" for="cv{fh_condition.INDEX}">{L_FH_RULE_CONDITIONS}</label>
+				<input class="inputbox fh-input-narrow" type="number" id="cv{fh_condition.INDEX}" name="condition_value[]" value="{fh_condition.VALUE}">
+			</div>
+			<!-- END fh_condition -->
+		</fieldset>
+
+		<fieldset>
+			<legend>{L_FH_RULE_ACTION}</legend>
+
+			<dl>
+				<dt><label for="action_type">{L_FH_RULE_ACTION}</label></dt>
+				<dd><select id="action_type" name="action_type">{S_ACTION_OPTIONS}</select></dd>
+			</dl>
+
+			<dl>
+				<dt><label for="action_severity">{L_FH_RULE_SEVERITY}</label></dt>
+				<dd><select id="action_severity" name="action_severity">{S_SEVERITY_OPTIONS}</select></dd>
+			</dl>
+		</fieldset>
+
+		<fieldset class="submit-buttons">
+			<input class="button1" type="submit" name="submit" value="{L_SUBMIT}">
+			<a class="button2" href="{U_BACK}">{L_BACK}</a>
+			{S_FORM_TOKEN}
+		</fieldset>
+
+	</form>
+
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

@@ -1,0 +1,398 @@
+imports:
+    - { resource: tables.yml }
+
+services:
+    # ------------------------------------------------------------------
+    # Foundation
+    # ------------------------------------------------------------------
+    salvocortesiano.forumhealth.settings:
+        class: salvocortesiano\forumhealth\service\settings
+        arguments:
+            - '@config'
+
+    salvocortesiano.forumhealth.logger:
+        class: salvocortesiano\forumhealth\service\logger
+        arguments:
+            - '@log'
+            - '@user'
+            - '@salvocortesiano.forumhealth.settings'
+
+    salvocortesiano.forumhealth.text.normaliser:
+        class: salvocortesiano\forumhealth\service\text\normaliser
+        arguments:
+            - '@salvocortesiano.forumhealth.settings'
+
+    salvocortesiano.forumhealth.security.url_validator:
+        class: salvocortesiano\forumhealth\service\security\url_validator
+        arguments:
+            - '@salvocortesiano.forumhealth.settings'
+
+    # ------------------------------------------------------------------
+    # Repositories
+    #
+    # phpBB core table names are passed in as parameters rather than read
+    # from the global constants, so the classes stay unit testable.
+    # ------------------------------------------------------------------
+    salvocortesiano.forumhealth.repository.topics:
+        class: salvocortesiano\forumhealth\repository\topic_repository
+        arguments:
+            - '@dbal.conn'
+            - '%salvocortesiano.forumhealth.tables.topic_metrics%'
+            - '%core.table_prefix%topics'
+            - '%core.table_prefix%posts'
+            - '%core.table_prefix%users'
+
+    salvocortesiano.forumhealth.repository.posts:
+        class: salvocortesiano\forumhealth\repository\post_repository
+        arguments:
+            - '@dbal.conn'
+            - '%core.table_prefix%posts'
+            - '%core.table_prefix%topics'
+
+    salvocortesiano.forumhealth.repository.alerts:
+        class: salvocortesiano\forumhealth\repository\alert_repository
+        arguments:
+            - '@dbal.conn'
+            - '%salvocortesiano.forumhealth.tables.alerts%'
+
+    salvocortesiano.forumhealth.repository.relations:
+        class: salvocortesiano\forumhealth\repository\relation_repository
+        arguments:
+            - '@dbal.conn'
+            - '%salvocortesiano.forumhealth.tables.topic_relations%'
+            - '%core.table_prefix%topics'
+
+    salvocortesiano.forumhealth.repository.links:
+        class: salvocortesiano\forumhealth\repository\link_repository
+        arguments:
+            - '@dbal.conn'
+            - '%salvocortesiano.forumhealth.tables.links%'
+            - '%salvocortesiano.forumhealth.tables.link_occurrences%'
+            - '%core.table_prefix%topics'
+
+    salvocortesiano.forumhealth.repository.metrics:
+        class: salvocortesiano\forumhealth\repository\metric_repository
+        arguments:
+            - '@dbal.conn'
+            - '%salvocortesiano.forumhealth.tables.metrics_history%'
+
+    salvocortesiano.forumhealth.repository.rules:
+        class: salvocortesiano\forumhealth\repository\rule_repository
+        arguments:
+            - '@dbal.conn'
+            - '%salvocortesiano.forumhealth.tables.rules%'
+
+    salvocortesiano.forumhealth.repository.jobs:
+        class: salvocortesiano\forumhealth\repository\job_repository
+        arguments:
+            - '@dbal.conn'
+            - '%salvocortesiano.forumhealth.tables.jobs%'
+
+    salvocortesiano.forumhealth.repository.community:
+        class: salvocortesiano\forumhealth\repository\community_repository
+        arguments:
+            - '@dbal.conn'
+            - '%core.table_prefix%users'
+            - '%core.table_prefix%topics'
+            - '%core.table_prefix%posts'
+            - '%salvocortesiano.forumhealth.tables.topic_metrics%'
+
+    # ------------------------------------------------------------------
+    # Optional integrations
+    #
+    # The registry receives the container itself because a provider is
+    # resolved by an id the administrator supplies at runtime, which
+    # cannot be expressed as a compile-time dependency.
+    # ------------------------------------------------------------------
+    # Tagged providers are gathered at compile time. phpBB's runtime container
+    # is a dumped Container, which has no findTaggedServiceIds(), so a
+    # service_collection is the only way to discover them later.
+    salvocortesiano.forumhealth.search_provider_collection:
+        class: phpbb\di\service_collection
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: service_collection, tag: salvocortesiano.forumhealth.search_provider }
+
+    salvocortesiano.forumhealth.ai_provider_collection:
+        class: phpbb\di\service_collection
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: service_collection, tag: salvocortesiano.forumhealth.ai_provider }
+
+    salvocortesiano.forumhealth.integrations.registry:
+        class: salvocortesiano\forumhealth\service\integrations\registry
+        arguments:
+            - '@service_container'
+            - '@ext.manager'
+            - '@salvocortesiano.forumhealth.settings'
+            - '@salvocortesiano.forumhealth.logger'
+            - '@salvocortesiano.forumhealth.search_provider_collection'
+            - '@salvocortesiano.forumhealth.ai_provider_collection'
+
+    # ------------------------------------------------------------------
+    # Bridges to specific third-party extensions
+    #
+    # Both take the container and resolve the other extension's services at
+    # runtime. They must NOT take '@salvocortesiano.meilisearch.indexer' or
+    # '@salvocortesiano.aireply.provider_manager' as arguments: those are
+    # compile-time references, and on a board without those extensions the
+    # container would fail to build, taking the whole forum down rather than
+    # just this feature.
+    # ------------------------------------------------------------------
+    salvocortesiano.forumhealth.bridge.meilisearch:
+        class: salvocortesiano\forumhealth\service\integrations\bridge\meilisearch_bridge
+        arguments:
+            - '@service_container'
+            - '@salvocortesiano.forumhealth.repository.posts'
+            - '@salvocortesiano.forumhealth.logger'
+        tags:
+            - { name: salvocortesiano.forumhealth.search_provider }
+
+    salvocortesiano.forumhealth.bridge.aireply:
+        class: salvocortesiano\forumhealth\service\integrations\bridge\aireply_bridge
+        arguments:
+            - '@service_container'
+            - '@salvocortesiano.forumhealth.settings'
+            - '@salvocortesiano.forumhealth.logger'
+        tags:
+            - { name: salvocortesiano.forumhealth.ai_provider }
+
+    salvocortesiano.forumhealth.integrations.search:
+        class: salvocortesiano\forumhealth\service\integrations\meilisearch\adapter
+        arguments:
+            - '@salvocortesiano.forumhealth.integrations.registry'
+
+    salvocortesiano.forumhealth.integrations.ai_cache:
+        class: salvocortesiano\forumhealth\service\integrations\ai\cache
+        arguments:
+            - '@dbal.conn'
+            - '@salvocortesiano.forumhealth.settings'
+            - '%salvocortesiano.forumhealth.tables.ai_cache%'
+
+    salvocortesiano.forumhealth.integrations.ai:
+        class: salvocortesiano\forumhealth\service\integrations\ai\adapter
+        arguments:
+            - '@salvocortesiano.forumhealth.integrations.registry'
+            - '@salvocortesiano.forumhealth.integrations.ai_cache'
+            - '@salvocortesiano.forumhealth.settings'
+
+    # ------------------------------------------------------------------
+    # Content analysis
+    # ------------------------------------------------------------------
+    salvocortesiano.forumhealth.content.freshness:
+        class: salvocortesiano\forumhealth\service\content\freshness_analyser
+        arguments:
+            - '@salvocortesiano.forumhealth.repository.topics'
+            - '@salvocortesiano.forumhealth.repository.posts'
+            - '@salvocortesiano.forumhealth.text.normaliser'
+            - '@salvocortesiano.forumhealth.settings'
+            - '@salvocortesiano.forumhealth.integrations.ai'
+
+    salvocortesiano.forumhealth.content.solutions:
+        class: salvocortesiano\forumhealth\service\content\solution_detector
+        arguments:
+            - '@salvocortesiano.forumhealth.repository.topics'
+            - '@salvocortesiano.forumhealth.repository.posts'
+            - '@salvocortesiano.forumhealth.settings'
+            - '@salvocortesiano.forumhealth.text.normaliser'
+            - '@salvocortesiano.forumhealth.integrations.ai'
+
+    salvocortesiano.forumhealth.content.duplicates:
+        class: salvocortesiano\forumhealth\service\content\duplicate_detector
+        arguments:
+            - '@salvocortesiano.forumhealth.repository.topics'
+            - '@salvocortesiano.forumhealth.repository.relations'
+            - '@salvocortesiano.forumhealth.text.normaliser'
+            - '@salvocortesiano.forumhealth.settings'
+            - '@salvocortesiano.forumhealth.integrations.search'
+            - '@salvocortesiano.forumhealth.integrations.ai'
+
+    salvocortesiano.forumhealth.content.analyser:
+        class: salvocortesiano\forumhealth\service\content\content_analyser
+        arguments:
+            - '@salvocortesiano.forumhealth.repository.topics'
+            - '@salvocortesiano.forumhealth.repository.jobs'
+            - '@salvocortesiano.forumhealth.text.normaliser'
+            - '@salvocortesiano.forumhealth.settings'
+            - '@salvocortesiano.forumhealth.content.freshness'
+            - '@salvocortesiano.forumhealth.content.solutions'
+
+    salvocortesiano.forumhealth.content.link_scanner:
+        class: salvocortesiano\forumhealth\service\content\link_scanner
+        arguments:
+            - '@salvocortesiano.forumhealth.repository.links'
+            - '@salvocortesiano.forumhealth.repository.posts'
+            - '@salvocortesiano.forumhealth.repository.jobs'
+            - '@salvocortesiano.forumhealth.security.url_validator'
+            - '@salvocortesiano.forumhealth.settings'
+            - '@salvocortesiano.forumhealth.logger'
+
+    # ------------------------------------------------------------------
+    # Community analysis and scoring
+    # ------------------------------------------------------------------
+    salvocortesiano.forumhealth.community.analyser:
+        class: salvocortesiano\forumhealth\service\community\community_analyser
+        arguments:
+            - '@salvocortesiano.forumhealth.repository.community'
+            - '@salvocortesiano.forumhealth.repository.metrics'
+            - '@salvocortesiano.forumhealth.settings'
+
+    salvocortesiano.forumhealth.scoring.health:
+        class: salvocortesiano\forumhealth\service\scoring\health_score
+        arguments:
+            - '@salvocortesiano.forumhealth.repository.topics'
+            - '@salvocortesiano.forumhealth.repository.relations'
+            - '@salvocortesiano.forumhealth.repository.links'
+            - '@salvocortesiano.forumhealth.repository.metrics'
+            - '@salvocortesiano.forumhealth.community.analyser'
+            - '@salvocortesiano.forumhealth.settings'
+
+    # ------------------------------------------------------------------
+    # Alerts, recommendations and rules
+    # ------------------------------------------------------------------
+    salvocortesiano.forumhealth.alerts.manager:
+        class: salvocortesiano\forumhealth\service\alerts\alert_manager
+        arguments:
+            - '@salvocortesiano.forumhealth.repository.alerts'
+            - '@salvocortesiano.forumhealth.repository.topics'
+            - '@salvocortesiano.forumhealth.repository.relations'
+            - '@salvocortesiano.forumhealth.repository.links'
+            - '@salvocortesiano.forumhealth.repository.community'
+            - '@salvocortesiano.forumhealth.community.analyser'
+            - '@salvocortesiano.forumhealth.integrations.registry'
+            - '@salvocortesiano.forumhealth.settings'
+
+    salvocortesiano.forumhealth.alerts.recommendations:
+        class: salvocortesiano\forumhealth\service\alerts\recommendation_engine
+        arguments:
+            - '@salvocortesiano.forumhealth.alerts.manager'
+            - '@salvocortesiano.forumhealth.repository.topics'
+            - '@salvocortesiano.forumhealth.community.analyser'
+            - '@salvocortesiano.forumhealth.integrations.registry'
+            - '@salvocortesiano.forumhealth.settings'
+
+    salvocortesiano.forumhealth.rules.engine:
+        class: salvocortesiano\forumhealth\service\rules\rule_engine
+        arguments:
+            - '@salvocortesiano.forumhealth.repository.rules'
+            - '@salvocortesiano.forumhealth.repository.alerts'
+            - '@salvocortesiano.forumhealth.settings'
+
+    # ------------------------------------------------------------------
+    # Public side
+    # ------------------------------------------------------------------
+    salvocortesiano.forumhealth.listener:
+        class: salvocortesiano\forumhealth\event\listener
+        arguments:
+            - '@salvocortesiano.forumhealth.settings'
+            - '@salvocortesiano.forumhealth.repository.relations'
+            - '@salvocortesiano.forumhealth.repository.topics'
+            - '@template'
+            - '@language'
+            - '@auth'
+            - '@user'
+            - '@controller.helper'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+        tags:
+            - { name: event.listener }
+
+    salvocortesiano.forumhealth.controller.similar:
+        class: salvocortesiano\forumhealth\controller\similar
+        arguments:
+            - '@salvocortesiano.forumhealth.content.duplicates'
+            - '@salvocortesiano.forumhealth.repository.topics'
+            - '@salvocortesiano.forumhealth.settings'
+            - '@auth'
+            - '@user'
+            - '@request'
+            - '@language'
+            - '@config'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+
+    # ------------------------------------------------------------------
+    # Background tasks
+    # ------------------------------------------------------------------
+    salvocortesiano.forumhealth.cron.content:
+        class: salvocortesiano\forumhealth\cron\task\content_analysis
+        arguments:
+            - '@salvocortesiano.forumhealth.repository.jobs'
+            - '@salvocortesiano.forumhealth.settings'
+            - '@salvocortesiano.forumhealth.logger'
+            - '@salvocortesiano.forumhealth.content.analyser'
+            - '@salvocortesiano.forumhealth.content.duplicates'
+            - '@salvocortesiano.forumhealth.rules.engine'
+            - '@salvocortesiano.forumhealth.repository.topics'
+        # phpBB identifies a cron task by the name set here. Without it the
+        # task cannot be addressed by phpbbcli or shown correctly in the ACP.
+        calls:
+            - [set_name, [salvocortesiano.forumhealth.cron.content]]
+        tags:
+            - { name: cron.task }
+
+    salvocortesiano.forumhealth.cron.community:
+        class: salvocortesiano\forumhealth\cron\task\community_analysis
+        arguments:
+            - '@salvocortesiano.forumhealth.repository.jobs'
+            - '@salvocortesiano.forumhealth.settings'
+            - '@salvocortesiano.forumhealth.logger'
+            - '@salvocortesiano.forumhealth.community.analyser'
+            - '@salvocortesiano.forumhealth.scoring.health'
+        # phpBB identifies a cron task by the name set here. Without it the
+        # task cannot be addressed by phpbbcli or shown correctly in the ACP.
+        calls:
+            - [set_name, [salvocortesiano.forumhealth.cron.community]]
+        tags:
+            - { name: cron.task }
+
+    salvocortesiano.forumhealth.cron.links:
+        class: salvocortesiano\forumhealth\cron\task\link_scan
+        arguments:
+            - '@salvocortesiano.forumhealth.repository.jobs'
+            - '@salvocortesiano.forumhealth.settings'
+            - '@salvocortesiano.forumhealth.logger'
+            - '@salvocortesiano.forumhealth.content.link_scanner'
+        # phpBB identifies a cron task by the name set here. Without it the
+        # task cannot be addressed by phpbbcli or shown correctly in the ACP.
+        calls:
+            - [set_name, [salvocortesiano.forumhealth.cron.links]]
+        tags:
+            - { name: cron.task }
+
+    salvocortesiano.forumhealth.cron.alerts:
+        class: salvocortesiano\forumhealth\cron\task\alert_generation
+        arguments:
+            - '@salvocortesiano.forumhealth.repository.jobs'
+            - '@salvocortesiano.forumhealth.settings'
+            - '@salvocortesiano.forumhealth.logger'
+            - '@salvocortesiano.forumhealth.alerts.manager'
+            - '@salvocortesiano.forumhealth.integrations.registry'
+        # phpBB identifies a cron task by the name set here. Without it the
+        # task cannot be addressed by phpbbcli or shown correctly in the ACP.
+        calls:
+            - [set_name, [salvocortesiano.forumhealth.cron.alerts]]
+        tags:
+            - { name: cron.task }
+
+    salvocortesiano.forumhealth.cron.cleanup:
+        class: salvocortesiano\forumhealth\cron\task\cleanup
+        arguments:
+            - '@salvocortesiano.forumhealth.repository.jobs'
+            - '@salvocortesiano.forumhealth.settings'
+            - '@salvocortesiano.forumhealth.logger'
+            - '@salvocortesiano.forumhealth.repository.alerts'
+            - '@salvocortesiano.forumhealth.repository.relations'
+            - '@salvocortesiano.forumhealth.repository.links'
+            - '@salvocortesiano.forumhealth.repository.metrics'
+            - '@salvocortesiano.forumhealth.repository.topics'
+            - '@salvocortesiano.forumhealth.integrations.ai_cache'
+            - '%core.table_prefix%posts'
+        # phpBB identifies a cron task by the name set here. Without it the
+        # task cannot be addressed by phpbbcli or shown correctly in the ACP.
+        calls:
+            - [set_name, [salvocortesiano.forumhealth.cron.cleanup]]
+        tags:
+            - { name: cron.task }

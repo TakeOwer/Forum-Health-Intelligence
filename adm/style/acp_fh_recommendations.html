@@ -1,0 +1,32 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_RECOMMENDATIONS}</h1>
+<p>{L_FH_RECOMMENDATIONS_EXPLAIN}</p>
+
+<!-- IF S_HAS_ITEMS -->
+	<ol class="fh-rec-list fh-rec-ordered">
+	<!-- BEGIN fh_recommendation -->
+		<li>
+			<p>{fh_recommendation.TEXT}</p>
+			<a class="button2" href="{fh_recommendation.U_ACTION}">{fh_recommendation.ACTION}</a>
+		</li>
+	<!-- END fh_recommendation -->
+	</ol>
+<!-- ELSE -->
+	<p class="fh-empty">{L_FH_NO_RECOMMENDATIONS}</p>
+<!-- ENDIF -->
+
+<section>
+	<h2>{L_FH_MODERATOR_LOAD}</h2>
+	<ul class="fh-load-list">
+		<li>{L_ACP_FH_DUPLICATES}: <strong>{FH_LOAD_DUPLICATES}</strong></li>
+		<li>{L_ACP_FH_LINKS}: <strong>{FH_LOAD_LINKS}</strong></li>
+		<li>{L_ACP_FH_UNANSWERED}: <strong>{FH_LOAD_UNANSWERED}</strong></li>
+		<li>{L_ACP_FH_FRESHNESS}: <strong>{FH_LOAD_OUTDATED}</strong></li>
+	</ul>
+	<p><strong>{FH_LOAD_TOTAL_TEXT}</strong></p>
+</section>
+
+<!-- INCLUDE overall_footer.html -->

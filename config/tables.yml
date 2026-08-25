@@ -1,0 +1,13 @@
+# Table name parameters.
+# The phpBB table prefix is never assumed to be "phpbb_"; it is always injected
+# from the core parameter %core.table_prefix%.
+parameters:
+    salvocortesiano.forumhealth.tables.topic_metrics: '%core.table_prefix%fh_topic_metrics'
+    salvocortesiano.forumhealth.tables.topic_relations: '%core.table_prefix%fh_topic_relations'
+    salvocortesiano.forumhealth.tables.links: '%core.table_prefix%fh_links'
+    salvocortesiano.forumhealth.tables.link_occurrences: '%core.table_prefix%fh_link_occurrences'
+    salvocortesiano.forumhealth.tables.alerts: '%core.table_prefix%fh_alerts'
+    salvocortesiano.forumhealth.tables.metrics_history: '%core.table_prefix%fh_metrics_history'
+    salvocortesiano.forumhealth.tables.rules: '%core.table_prefix%fh_rules'
+    salvocortesiano.forumhealth.tables.ai_cache: '%core.table_prefix%fh_ai_cache'
+    salvocortesiano.forumhealth.tables.jobs: '%core.table_prefix%fh_jobs'

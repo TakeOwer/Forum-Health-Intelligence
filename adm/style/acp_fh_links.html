@@ -1,0 +1,73 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_LINKS}</h1>
+<p>{L_FH_LINKS_EXPLAIN}</p>
+
+<!-- IF S_FH_LINKS_DISABLED -->
+	<div class="errorbox" role="status">
+		<p>{L_FH_LINKS_DISABLED}</p>
+	</div>
+<!-- ENDIF -->
+
+<ul class="fh-counts">
+	<li><strong>{FH_COUNT_BROKEN}</strong> {L_FH_LINK_STATE_BROKEN}</li>
+	<li><strong>{FH_COUNT_WARNING}</strong> {L_FH_LINK_STATE_WARNING}</li>
+	<li><strong>{FH_COUNT_OK}</strong> {L_FH_LINK_STATE_OK}</li>
+	<li><strong>{FH_COUNT_PENDING}</strong> {L_FH_LINK_STATE_PENDING}</li>
+	<li><strong>{FH_COUNT_UNSAFE}</strong> {L_FH_LINK_STATE_UNSAFE}</li>
+</ul>
+
+<!-- IF FH_COUNT_UNSAFE -->
+	<p class="fh-muted">{L_FH_LINK_UNSAFE_NOTE}</p>
+<!-- ENDIF -->
+
+<!-- IF S_HAS_ITEMS -->
+<div class="fh-table-scroll">
+	<table class="table1">
+		<thead>
+			<tr>
+				<th scope="col">{L_FH_COL_URL}</th>
+				<th scope="col">{L_FH_COL_LINK_STATE}</th>
+				<th scope="col">{L_FH_COL_HTTP}</th>
+				<th scope="col">{L_FH_COL_OCCURRENCES}</th>
+				<th scope="col">{L_FH_COL_CHECKED}</th>
+			</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN fh_link -->
+			<tr>
+				<td class="fh-url">
+					<span title="{fh_link.URL}">{fh_link.URL}</span>
+					<!-- IF .fh_link.topic -->
+						<ul class="fh-occurrences">
+						<!-- BEGIN topic -->
+							<li><a href="{fh_link.topic.U_TOPIC}">{fh_link.topic.TITLE}</a></li>
+						<!-- END topic -->
+						</ul>
+					<!-- ENDIF -->
+				</td>
+				<td data-label="{L_FH_COL_LINK_STATE}" class="{fh_link.STATE_CLASS}">
+					<span class="fh-badge">{fh_link.STATE}</span>
+					<!-- IF fh_link.FAILURES -->
+						<span class="fh-muted">{fh_link.FAILURES_TEXT}</span>
+					<!-- ENDIF -->
+				</td>
+				<td data-label="{L_FH_COL_HTTP}"><!-- IF fh_link.STATUS -->{fh_link.STATUS}<!-- ELSE -->&mdash;<!-- ENDIF --></td>
+				<td data-label="{L_FH_COL_OCCURRENCES}">{fh_link.OCCURRENCES}</td>
+				<td data-label="{L_FH_COL_CHECKED}">{fh_link.CHECKED}</td>
+			</tr>
+		<!-- END fh_link -->
+		</tbody>
+	</table>
+</div>
+
+<div class="pagination">
+	<!-- INCLUDE pagination.html -->
+</div>
+<!-- ELSE -->
+	<p class="fh-empty">{L_FH_NO_RESULTS}</p>
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

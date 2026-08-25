@@ -1,0 +1,106 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_AI}</h1>
+<p>{L_FH_AI_EXPLAIN}</p>
+<p class="fh-muted">{L_FH_AI_HUMAN_NOTE}</p>
+
+<!-- IF not S_AI_AVAILABLE -->
+	<div class="fh-notice" role="status"><p>{L_FH_AI_UNAVAILABLE_NOTE}</p></div>
+<!-- ENDIF -->
+
+<div class="fh-stat-grid">
+	<div class="fh-stat">
+		<span class="fh-stat-value">{FH_AI_STATE}</span>
+		<span class="fh-stat-label">{L_FH_INT_STATE}</span>
+	</div>
+	<div class="fh-stat">
+		<span class="fh-stat-value">{FH_AI_USED_TODAY}</span>
+		<span class="fh-stat-label">{L_FH_AI_USED_TODAY}</span>
+	</div>
+	<div class="fh-stat">
+		<span class="fh-stat-value"><!-- IF S_AI_UNLIMITED -->&infin;<!-- ELSE -->{FH_AI_REMAINING}<!-- ENDIF --></span>
+		<span class="fh-stat-label">{L_FH_AI_REMAINING}</span>
+	</div>
+	<div class="fh-stat">
+		<span class="fh-stat-value">{FH_AI_CACHE_SIZE}</span>
+		<span class="fh-stat-label">{L_FH_AI_CACHE_SIZE}</span>
+	</div>
+</div>
+
+<form id="fh_ai" method="post" action="{U_ACTION}">
+
+	<fieldset>
+		<legend>{L_ACP_FH_AI}</legend>
+
+		<dl>
+			<dt><label for="ai_enabled">{L_FH_AI_ENABLE}</label></dt>
+			<dd>
+				<label><input type="radio" id="ai_enabled" name="ai_enabled" value="1"<!-- IF S_AI_ON --> checked="checked"<!-- ENDIF -->> {L_FH_YES}</label>
+				<label><input type="radio" name="ai_enabled" value="0"<!-- IF not S_AI_ON --> checked="checked"<!-- ENDIF -->> {L_FH_NO}</label>
+			</dd>
+		</dl>
+
+		<dl>
+			<dt><label for="bot_id">{L_FH_AI_BOT_ID}</label><br><span>{L_FH_AI_BOT_ID_EXPLAIN}</span></dt>
+			<dd><input class="inputbox fh-input-narrow" type="number" id="bot_id" name="bot_id" value="{FH_AI_BOT_ID}" min="0"></dd>
+		</dl>
+
+		<dl>
+			<dt><label for="daily_limit">{L_FH_AI_BUDGET}</label><br><span>{L_FH_AI_BUDGET_EXPLAIN}</span></dt>
+			<dd><input class="inputbox fh-input-narrow" type="number" id="daily_limit" name="daily_limit" value="{FH_AI_DAILY_LIMIT}" min="0" max="100000"></dd>
+		</dl>
+
+		<dl>
+			<dt><label for="min_candidate">{L_FH_AI_MIN_CANDIDATE}</label><br><span>{L_FH_AI_MIN_CANDIDATE_EXPLAIN}</span></dt>
+			<dd><input class="inputbox fh-input-narrow" type="number" id="min_candidate" name="min_candidate" value="{FH_AI_MIN_CANDIDATE}" min="0" max="100"></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{L_FH_AI_FEATURES}</legend>
+
+		<dl>
+			<dt><label>{L_FH_AI_FEATURES}</label></dt>
+			<dd>
+				<label><input type="checkbox" name="feature_duplicates" value="1"<!-- IF S_AI_F_DUPLICATES --> checked="checked"<!-- ENDIF -->> {L_FH_AI_F_DUPLICATES}</label><br>
+				<label><input type="checkbox" name="feature_solutions" value="1"<!-- IF S_AI_F_SOLUTIONS --> checked="checked"<!-- ENDIF -->> {L_FH_AI_F_SOLUTIONS}</label><br>
+				<label><input type="checkbox" name="feature_freshness" value="1"<!-- IF S_AI_F_FRESHNESS --> checked="checked"<!-- ENDIF -->> {L_FH_AI_F_FRESHNESS}</label><br>
+				<label><input type="checkbox" name="feature_knowledge" value="1"<!-- IF S_AI_F_KNOWLEDGE --> checked="checked"<!-- ENDIF -->> {L_FH_AI_F_KNOWLEDGE}</label><br>
+				<label><input type="checkbox" name="feature_conflicts" value="1"<!-- IF S_AI_F_CONFLICTS --> checked="checked"<!-- ENDIF -->> {L_FH_AI_F_CONFLICTS}</label>
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{L_FH_GROUP_PRIVACY}</legend>
+
+		<dl>
+			<dt><label for="send_content">{L_FH_AI_SEND_CONTENT}</label><br><span>{L_FH_AI_SEND_CONTENT_EXPLAIN}</span></dt>
+			<dd>
+				<label><input type="radio" id="send_content" name="send_content" value="1"<!-- IF S_AI_SEND_CONTENT --> checked="checked"<!-- ENDIF -->> {L_FH_YES}</label>
+				<label><input type="radio" name="send_content" value="0"<!-- IF not S_AI_SEND_CONTENT --> checked="checked"<!-- ENDIF -->> {L_FH_NO}</label>
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{L_FH_AI_CACHE}</legend>
+		<p>{L_FH_AI_CACHE_EXPLAIN}</p>
+
+		<dl>
+			<dt><label for="cache_days">{L_FH_AI_CACHE_DAYS}</label></dt>
+			<dd><input class="inputbox fh-input-narrow" type="number" id="cache_days" name="cache_days" value="{FH_AI_CACHE_DAYS}" min="1" max="365"></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" name="submit" value="{L_SUBMIT}">
+		<a class="button2" href="{U_CLEAR_CACHE}">{L_FH_AI_CACHE_CLEAR}</a>
+		{S_FORM_TOKEN}
+	</fieldset>
+
+</form>
+
+<!-- INCLUDE overall_footer.html -->

@@ -1,0 +1,51 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_SETTINGS}</h1>
+<p>{L_FH_SETTINGS_EXPLAIN}</p>
+
+<form id="fh_settings" method="post" action="{U_ACTION}">
+
+	<!-- BEGIN fh_group -->
+	<fieldset>
+		<legend>{fh_group.NAME}</legend>
+		<p>{fh_group.DESCRIPTION}</p>
+
+		<!-- BEGIN setting -->
+		<dl>
+			<dt>
+				<label for="{fh_group.setting.KEY}">{fh_group.setting.NAME}</label>
+				<br><span>{fh_group.setting.DESCRIPTION}</span>
+			</dt>
+			<dd>
+				<!-- IF fh_group.setting.S_LOCKED -->
+					<!-- A locked setting is shown so its value is auditable, but
+					     it is rendered as text and never submitted. -->
+					<strong>{L_FH_NO}</strong> <span class="fh-badge">{L_FH_SETTING_LOCKED}</span>
+				<!-- ELSEIF fh_group.setting.S_BOOL -->
+					<label><input type="radio" id="{fh_group.setting.KEY}" name="{fh_group.setting.KEY}" value="1"<!-- IF fh_group.setting.VALUE --> checked="checked"<!-- ENDIF -->> {L_FH_YES}</label>
+					<label><input type="radio" name="{fh_group.setting.KEY}" value="0"<!-- IF not fh_group.setting.VALUE --> checked="checked"<!-- ENDIF -->> {L_FH_NO}</label>
+				<!-- ELSEIF fh_group.setting.S_INT -->
+					<input class="inputbox fh-input-narrow" type="number" id="{fh_group.setting.KEY}" name="{fh_group.setting.KEY}" value="{fh_group.setting.VALUE}" min="{fh_group.setting.MIN}" max="{fh_group.setting.MAX}">
+				<!-- ELSEIF fh_group.setting.S_TEXT -->
+					<textarea class="inputbox" id="{fh_group.setting.KEY}" name="{fh_group.setting.KEY}" rows="4" cols="40">{fh_group.setting.VALUE}</textarea>
+				<!-- ELSE -->
+					<input class="inputbox" type="text" id="{fh_group.setting.KEY}" name="{fh_group.setting.KEY}" value="{fh_group.setting.VALUE}" maxlength="2000">
+				<!-- ENDIF -->
+			</dd>
+		</dl>
+		<!-- END setting -->
+
+	</fieldset>
+	<!-- END fh_group -->
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" name="submit" value="{L_SUBMIT}">
+		<input class="button2" type="reset" value="{L_RESET}">
+		{S_FORM_TOKEN}
+	</fieldset>
+
+</form>
+
+<!-- INCLUDE overall_footer.html -->

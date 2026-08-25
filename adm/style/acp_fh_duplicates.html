@@ -1,0 +1,57 @@
+<!-- INCLUDE overall_header.html -->
+
+<a id="maincontent"></a>
+
+<h1>{L_ACP_FH_DUPLICATES}</h1>
+<p>{L_FH_DUPLICATES_EXPLAIN}</p>
+<p class="fh-muted">{L_FH_DUPLICATE_NO_ACTION}</p>
+
+<!-- IF S_HAS_ITEMS -->
+<form method="post" action="{U_ACTION}">
+
+	<!-- Each pair is a card rather than a table row: the two titles need room
+	     to be read side by side, and that does not survive a narrow column. -->
+	<!-- BEGIN fh_pair -->
+	<div class="fh-pair">
+		<div class="fh-pair-header">
+			<span class="fh-badge fh-conf-{fh_pair.CONFIDENCE}">{fh_pair.CONFIDENCE_LABEL}</span>
+			<span class="fh-muted">{fh_pair.CONFIDENCE}% &middot; {fh_pair.SOURCE} &middot; {fh_pair.DATE}</span>
+		</div>
+
+		<div class="fh-pair-body">
+			<div class="fh-pair-side">
+				<h3>{L_FH_DUPLICATE_CURRENT}</h3>
+				<a href="{fh_pair.U_TOPIC_A}">{fh_pair.TITLE_A}</a>
+			</div>
+			<div class="fh-pair-side">
+				<h3>{L_FH_DUPLICATE_MATCH}</h3>
+				<a href="{fh_pair.U_TOPIC_B}">{fh_pair.TITLE_B}</a>
+			</div>
+		</div>
+
+		<div class="fh-pair-reasons">
+			<h4>{L_FH_DUPLICATE_REASONS}</h4>
+			<p><span aria-hidden="true">&#10003;</span> {fh_pair.REASONS}</p>
+		</div>
+
+		<!-- IF S_FH_CAN_MANAGE -->
+		<div class="fh-pair-actions">
+			<a class="button2" href="{fh_pair.U_TOPIC_B}" target="_blank" rel="noopener">{L_FH_ACTION_OPEN}</a>
+			<button class="button2" type="submit" name="action" value="confirm" formaction="{U_ACTION}&amp;action=confirm&amp;relation_id={fh_pair.ID}">{L_FH_ACTION_CONFIRM}</button>
+			<button class="button2" type="submit" name="action" value="dismiss" formaction="{U_ACTION}&amp;action=dismiss&amp;relation_id={fh_pair.ID}">{L_FH_ACTION_DISMISS}</button>
+		</div>
+		<!-- ENDIF -->
+	</div>
+	<!-- END fh_pair -->
+
+	{S_FORM_TOKEN}
+</form>
+
+<div class="pagination">
+	<!-- INCLUDE pagination.html -->
+</div>
+<!-- ELSE -->
+	<p class="fh-empty">{L_FH_NO_RESULTS}</p>
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->
