@@ -1,4 +1,4 @@
-# -Forum Health & Intelligence
+# Forum Health & Intelligence
 
 **An analysis extension for phpBB 3.3.** It reads what is already on your board
 and tells you what deserves your attention: popular questions nobody answered,
