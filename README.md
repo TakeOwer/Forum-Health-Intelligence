@@ -12,11 +12,6 @@ It reports. It never moderates.
 [![License](https://img.shields.io/badge/license-GPL--2.0-green)](license.txt)
 [![Languages](https://img.shields.io/badge/languages-en%20%7C%20it-lightgrey)](language/)
 
-<!-- Replace with a real screenshot once you have one. This is the first thing
-     anybody sees on the repository page, so it does more work than any
-     paragraph below it. -->
-![Dashboard](docs/screenshots/dashboard.png)
-
 ---
 
 ## Contents
