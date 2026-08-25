@@ -162,7 +162,10 @@ class alerts_module extends base_module
 		foreach ($recommendations as $recommendation)
 		{
 			$this->template->assign_block_vars('fh_recommendation', [
-				'TEXT'		=> $this->language->lang($recommendation['key'], $recommendation['params']),
+				'TEXT'		=> $this->language->lang(
+                    $recommendation['key'],
+                    ...array_values($recommendation['params'])
+                ),
 				'ACTION'	=> $this->language->lang($recommendation['action']),
 				'U_ACTION'	=> $this->module_url($recommendation['module'], $recommendation['mode']),
 				'PRIORITY'	=> (int) $recommendation['priority'],
@@ -258,7 +261,10 @@ class alerts_module extends base_module
 			}
 		}
 
-		return $this->language->lang($alert['explain_key'], $data);
+		return $this->language->lang(
+                    $alert['explain_key'],
+                    ...array_values($data)
+                );
 	}
 
 	/**

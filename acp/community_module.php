@@ -127,7 +127,10 @@ class community_module extends base_module
 		{
 			$this->template->assign_block_vars('fh_factor', [
 				'NAME'		=> $this->language->lang($factor['key']),
-				'DETAIL'	=> $this->language->lang($factor['key'] . '_DETAIL', $factor['data']),
+				'DETAIL'	=> $this->language->lang(
+                    $factor['key'] . '_DETAIL',
+                    ...array_values($factor['data'])
+                ),
 				'SCORE'		=> (int) $factor['score'],
 				'WEIGHT_TEXT'=> $this->language->lang('FH_FACTOR_WEIGHT', (int) $factor['weight']),
 				'S_POSITIVE'=> (bool) $factor['positive'],

@@ -94,7 +94,10 @@ class dashboard_module extends base_module
 			{
 				$this->template->assign_block_vars('fh_factor_' . $key, [
 					'NAME'		=> $this->language->lang($factor['key']),
-					'DETAIL'	=> $this->language->lang($factor['key'] . '_DETAIL', $factor['data']),
+					'DETAIL'	=> $this->language->lang(
+                    $factor['key'] . '_DETAIL',
+                    ...array_values($factor['data'])
+                ),
 					'SCORE'		=> (int) $factor['score'],
 					'WEIGHT_TEXT'=> $this->language->lang('FH_FACTOR_WEIGHT', (int) $factor['weight']),
 					'S_POSITIVE'=> (bool) $factor['positive'],
@@ -199,7 +202,10 @@ class dashboard_module extends base_module
 		foreach ($recommendations as $recommendation)
 		{
 			$this->template->assign_block_vars('fh_recommendation', [
-				'TEXT'		=> $this->language->lang($recommendation['key'], $recommendation['params']),
+				'TEXT'		=> $this->language->lang(
+                    $recommendation['key'],
+                    ...array_values($recommendation['params'])
+                ),
 				'ACTION'	=> $this->language->lang($recommendation['action']),
 				'U_ACTION'	=> $this->module_url($recommendation['module'], $recommendation['mode']),
 			]);
@@ -280,7 +286,10 @@ class dashboard_module extends base_module
 			}
 		}
 
-		return $this->language->lang($alert['explain_key'], $data);
+		return $this->language->lang(
+                    $alert['explain_key'],
+                    ...array_values($data)
+                );
 	}
 
 	/**
